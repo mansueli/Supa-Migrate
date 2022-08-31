@@ -1,5 +1,5 @@
 # Supa-Migrate
-Migrating schema &amp; data between supabase projects
+Migrating schema &amp; data between supabase projects. You still need to [migrate storage objects](https://supabase.com/docs/guides/database#migrate-storage-objects).
 
 ## Before you begin:
  - Install PSQL & pgdump on your system ([macOS](https://stackoverflow.com/a/55564878/2188186), [Windows](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) or [Linux](https://www.postgresql.org/download/linux/ubuntu/)).
