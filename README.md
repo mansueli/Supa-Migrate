@@ -45,3 +45,12 @@ PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c
 PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_schema.sh) the script above.
+
+> **Note** 
+>
+> You can display the output to console by adding an extra `-x` to the first line of the script. 
+>
+> Example:
+> ```
+> #!/usr/bin/env bash -x
+> ```
