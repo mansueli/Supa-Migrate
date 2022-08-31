@@ -18,12 +18,13 @@ OLD_DB_PASS=secret_password_here
 NEW_DB_PASS=secret_new_password_here
 
 #Script:
-PGPASSWORD=$OLD_DB_PASS pg_dump --clean --if-exists --quote-all-identifiers -h $OLD_DB_URL -U postgres > dump.sql
-PGPASSWORD=$OLD_DB_PASS psql -U postgres -h $OLD_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
-PGPASSWORD=$NEW_DB_PASS psql -h $NEW_DB_URL -U postgres -f dump.sql
-PGPASSWORD=$NEW_DB_PASS psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'TRUNCATE storage.objects'
-PGPASSWORD=$NEW_DB_PASS psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
+PGPASSWORD="$OLD_DB_PASS" pg_dump --clean --if-exists --quote-all-identifiers -h $OLD_DB_URL -U postgres > dump.sql -p 6543
+PGPASSWORD="$OLD_DB_PASS" psql -U postgres -h $OLD_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
+PGPASSWORD="$NEW_DB_PASS" psql -h $NEW_DB_URL -U postgres -f dump.sql -p 6543
+PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'TRUNCATE storage.objects'
+PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
 ```
+[Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_project.sh) the script above.
 
 ## Migrating Schema Only (everything but data):
 
@@ -38,8 +39,9 @@ NEW_DB_PASS=secret_new_password_here
 
 #Script:
 PGPASSWORD=$OLD_DB_PASS pg_dump --clean --if-exists --schema-only --quote-all-identifiers -h $OLD_DB_URL -U postgres > dump.sql
-PGPASSWORD=$OLD_DB_PASS psql -U postgres -h $OLD_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
-PGPASSWORD=$NEW_DB_PASS psql -h $NEW_DB_URL -U postgres -f dump.sql
-PGPASSWORD=$NEW_DB_PASS psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'TRUNCATE storage.objects'
-PGPASSWORD=$NEW_DB_PASS psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
+PGPASSWORD="$OLD_DB_PASS" psql -U postgres -h $OLD_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
+PGPASSWORD="$NEW_DB_PASS" psql -h $NEW_DB_URL -U postgres -f dump.sql -p 6543
+PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'TRUNCATE storage.objects'
+PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
 ```
+[Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_schema.sh) the script above.
