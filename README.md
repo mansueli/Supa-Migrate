@@ -3,7 +3,6 @@ Migrating schema &amp; data between supabase projects. You still need to [migrat
 
 ## Before you begin:
  - Install PSQL & pgdump on your system ([macOS](https://stackoverflow.com/a/55564878/2188186), [Windows](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) or [Linux](https://www.postgresql.org/download/linux/ubuntu/)).
- - Run `ALTER ROLE postgres SUPERUSER` in the [SQL Editor](https://app.supabase.com/project/_/sql) in both projects.
  - Edit project data in the scripts you will use. 
  - Run the script you selected 😊
 
