@@ -17,11 +17,26 @@ OLD_DB_PASS=secret_password_here
 NEW_DB_PASS=secret_new_password_here
 
 #Script:
-PGPASSWORD="$OLD_DB_PASS" pg_dump --clean --if-exists --quote-all-identifiers -h $OLD_DB_URL -U postgres > dump.sql -p 6543
-PGPASSWORD="$OLD_DB_PASS" psql -U postgres -h $OLD_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
-PGPASSWORD="$NEW_DB_PASS" psql -h $NEW_DB_URL -U postgres -f dump.sql -p 6543
-PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'TRUNCATE storage.objects'
-PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
+PGPASSWORD="$OLD_DB_PASS" pg_dump -d postgres -U postgres \
+  --clean \
+  --if-exists \
+  --quote-all-identifiers \
+  --exclude-table-data 'storage.objects' \
+  --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|pg_toast|pg_catalog|information_schema' \
+  --schema '*' \
+  -h "$OLD_DB_URL" > dump.sql
+
+sed -i '' -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
+sed -i '' -e 's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
+sed -i '' -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
+sed -i '' -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
+sed -i '' -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
+
+
+PGPASSWORD="$NEW_DB_PASS" psql -d postgres -U postgres \
+  --variable ON_ERROR_STOP=1 \
+  --file dump.sql \
+  -h "$NEW_DB_URL" -p 6543
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_project.sh) the script above.
 
@@ -37,11 +52,27 @@ OLD_DB_PASS=secret_password_here
 NEW_DB_PASS=secret_new_password_here
 
 #Script:
-PGPASSWORD="$OLD_DB_PASS" pg_dump --clean --if-exists --schema-only --quote-all-identifiers -h $OLD_DB_URL -U postgres > dump.sql
-PGPASSWORD="$OLD_DB_PASS" psql -U postgres -h $OLD_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
-PGPASSWORD="$NEW_DB_PASS" psql -h $NEW_DB_URL -U postgres -f dump.sql -p 6543
-PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'TRUNCATE storage.objects'
-PGPASSWORD="$NEW_DB_PASS" psql -U postgres -h $NEW_DB_URL -d postgres -p 6543 -c 'ALTER ROLE postgres NOSUPERUSER'
+PGPASSWORD="$OLD_DB_PASS" pg_dump -d postgres -U postgres \
+  --clean \
+  --if-exists \
+  --schema-only \
+  --quote-all-identifiers \
+  --exclude-table-data 'storage.objects' \
+  --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|pg_toast|pg_catalog|information_schema' \
+  --schema '*' \
+  -h "$OLD_DB_URL" > dump.sql
+
+sed -i '' -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
+sed -i '' -e 's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
+sed -i '' -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
+sed -i '' -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
+sed -i '' -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
+
+
+PGPASSWORD="$NEW_DB_PASS" psql -d postgres -U postgres \
+  --variable ON_ERROR_STOP=1 \
+  --file dump.sql \
+  -h "$NEW_DB_URL" -p 6543
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_schema.sh) the script above.
 
