@@ -23,7 +23,7 @@ PGPASSWORD="$OLD_DB_PASS" pg_dump -d postgres -U postgres \
   --schema-only \
   --quote-all-identifiers \
   --exclude-table-data 'storage.objects' \
-  --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|pg_toast|pg_catalog|information_schema' \
+  --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|pg_toast|pg_catalog|pg_*|information_schema' \
   --schema '*' \
   -h "$OLD_DB_URL" > dump.sql
 
