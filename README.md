@@ -1,5 +1,9 @@
 # Supa-Migrate
 Migrating schema &amp; data between supabase projects. You still need to [migrate storage objects](https://supabase.com/docs/guides/database#migrate-storage-objects).
+You can use the following Python notebook for full migration including storage items:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Migrate_Project_%26_Storage.ipynb)
+
 
 ## Before you begin:
  - Install PSQL & pgdump on your system ([macOS](https://stackoverflow.com/a/55564878/2188186), [Windows](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) or [Linux](https://www.postgresql.org/download/linux/ubuntu/)).
