@@ -24,26 +24,20 @@ case "$(uname)" in
   Darwin*) sedi=(-i "")
 esac
 
-PGPASSWORD="$OLD_DB_PASS" pg_dump -d postgres -U postgres \
+pg_dump postgres://postgres:"$OLD_DB_PASS"@"$OLD_DB_URL":6543/postgres \
   --clean \
   --if-exists \
   --quote-all-identifiers \
   --exclude-table-data 'storage.objects' \
   --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' \
-  --schema '*' -p 6543 \
-  -h "$OLD_DB_URL" > dump.sql 
+  --schema '*' > dump.sql 
 
 sed "${sedi[@]}" -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
 sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
-
-
-PGPASSWORD="$NEW_DB_PASS" psql -d postgres -U postgres \
-  --variable ON_ERROR_STOP=1 \
-  --file dump.sql \
-  -h "$NEW_DB_URL" -p 6543
+psql postgres://postgres:"$NEW_DB_PASS"@"$NEW_DB_URL":6543/postgres --file dump.sql 
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_project.sh) the script above.
 
@@ -57,11 +51,7 @@ OLD_DB_URL=db.old_project_ref.supabase.co
 NEW_DB_URL=db.new_project_ref.supabase.co
 OLD_DB_PASS=secret_password_here
 NEW_DB_PASS=secret_new_password_here
-####
 #Script:
-###
-
-## Compability script:
 # Default case for Linux sed, just use "-i"
 sedi=(-i)
 case "$(uname)" in
@@ -69,26 +59,21 @@ case "$(uname)" in
   Darwin*) sedi=(-i "")
 esac
 
-PGPASSWORD="$OLD_DB_PASS" pg_dump -d postgres -U postgres \
+pg_dump postgres://postgres:"$OLD_DB_PASS"@"$OLD_DB_URL":6543/postgres \
   --clean \
   --if-exists \
   --schema-only \
   --quote-all-identifiers \
-   --exclude-table-data 'storage.objects' \
+  --exclude-table-data 'storage.objects' \
   --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' \
-  --schema '*' -p 6543 \
-  -h "$OLD_DB_URL" > dump.sql 
+  --schema '*' > dump.sql 
 
 sed "${sedi[@]}" -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
-sed "${sedi[@]}" -e 's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
+sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
-
-PGPASSWORD="$NEW_DB_PASS" psql -d postgres -U postgres \
-  --variable ON_ERROR_STOP=1 \
-  --file dump.sql \
-  -h "$NEW_DB_URL" -p 6543
+psql postgres://postgres:"$NEW_DB_PASS"@"$NEW_DB_URL":6543/postgres --file dump.sql
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_schema.sh) the script above.
 
