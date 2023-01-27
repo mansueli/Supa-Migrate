@@ -144,4 +144,4 @@ for bucket in buckets:
         except Exception as e: 
           print("error uploading | " + str(e))
 ```
-[Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_schema.sh) the script above.
+[Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_objects.py) the script above.
