@@ -146,6 +146,10 @@ for bucket in buckets:
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_objects.py) the script above.
 
+# Backup of DB & storage files:
+
+You can use the following colab to download your storage objects and the DB.sql data:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Backup_Project_%26_Storage.ipynb)
 
 ``` bash
 #!/usr/bin/env bash
@@ -176,6 +180,5 @@ sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.s
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
 ```
-# Backup of DB & storage files:
+[Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/backup_database.sh) the script above.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mansueli/Supa-Migrate/blob/main/Backup_Project_%26_Storage.ipynb)
