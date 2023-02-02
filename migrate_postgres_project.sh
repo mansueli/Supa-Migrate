@@ -23,6 +23,6 @@ PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$P
 sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
-sed "${sedi[@]}" -e "s/'$POSTGRES_ORIGIN_DATABASE'/postgres/g" dump.sql
-sed "${sedi[@]}" -e "s/'$POSTGRES_ORIGIN_USERNAME'/postgres/g" dump.sql
+sed "${sedi[@]}" -e "s/"$POSTGRES_ORIGIN_DATABASE"/postgres/g" dump.sql
+sed "${sedi[@]}" -e "s/"$POSTGRES_ORIGIN_USERNAME"/postgres/g" dump.sql
 psql postgres://postgres:"$SUPA_PASSWORD"@"$SUPA_URL":6543/postgres --file dump.sql
