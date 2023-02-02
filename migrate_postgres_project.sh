@@ -15,12 +15,12 @@ case "$(uname)" in
 esac
 
 PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432" \
-  --dbname="$POSTGRES_ORIGIN_DATABASE" \ 
+  --dbname="$POSTGRES_ORIGIN_DATABASE" \
   --clean \
   --if-exists \
   --quote-all-identifiers \
   --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' \
-  --schema '*' > dump.sql 
+  --schema '*' > dump.sql
 #sed -i -e 's/;max_client_conn = 100/max_client_conn = 200/g' pgbouncer.ini
 sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
