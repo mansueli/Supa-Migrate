@@ -14,7 +14,7 @@ case "$(uname)" in
   Darwin*) sedi=(-i "")
 esac
 
-pg_dump postgres://postgres:"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_ORIGIN_DATABASE" \
+pg_dump "sslmode=require" postgres://postgres:"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_ORIGIN_DATABASE" \
   --clean \
   --if-exists \
   --quote-all-identifiers \
