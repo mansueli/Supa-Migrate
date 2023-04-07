@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
-from supabase import create_client
 import os
+from supabase import create_client, Client
 
-# creating the client for the project
-supabase_client = create_client(os.environ['SUPABASE_URL'], os.environ['SERVICE_ROLE_KEY'])
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE = os.environ.get("SUPABASE_SERVICE_ROLE")
 
-# Iterate through buckets
-buckets = supabase_client.storage().list_buckets()
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE)
+buckets = supabase.storage().list_buckets()
 for bucket in buckets:
     print("Copying objects from "+bucket.name)
-    objects = supabase_client.storage().from_(bucket.name).list()
+    objects = supabase.storage().from_(bucket.name).list()
+    folder = str(bucket.name)
+    os.mkdir(folder)
     for obj in objects:
         print(obj['name'])
         try:
-            with open(obj['name'], 'wb+') as f:
-                res = supabase_client.storage().from_(bucket.name).download(obj['name'])
+            with open(folder+'/'+obj['name'], 'wb+') as f:
+                res = supabase.storage().from_(bucket.name).download(obj['name'])
                 f.write(res)
                 f.close()
         except Exception as e:
