@@ -6,10 +6,10 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE = os.environ.get("SUPABASE_SERVICE_ROLE")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE)
-buckets = supabase.storage().list_buckets()
+buckets = supabase.storage.list_buckets()
 for bucket in buckets:
     print("Copying objects from "+bucket.name)
-    objects = supabase.storage().from_(bucket.name).list()
+    objects = supabase.storage.from_(bucket.name).list()
     folder = str(bucket.name)
     os.mkdir(folder)
     for obj in objects:
