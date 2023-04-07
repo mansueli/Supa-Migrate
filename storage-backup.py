@@ -16,7 +16,7 @@ for bucket in buckets:
         print(obj['name'])
         try:
             with open(folder+'/'+obj['name'], 'wb+') as f:
-                res = supabase.storage().from_(bucket.name).download(obj['name'])
+                res = supabase.storage.from_(bucket.name).download(obj['name'])
                 f.write(res)
                 f.close()
         except Exception as e:
