@@ -11,7 +11,8 @@ for bucket in buckets:
     print("Copying objects from "+bucket.name)
     objects = supabase.storage.from_(bucket.name).list()
     folder = str(bucket.name)
-    os.mkdir(folder)
+    if not os.path.exists(folder):
+        os.mkdir(folder)
     for obj in objects:
         print(obj['name'])
         try:
