@@ -17,7 +17,7 @@ pg_dump postgres://postgres:"$OLD_DB_PASS"@"$OLD_DB_URL":6543/postgres \
   --if-exists \
   --quote-all-identifiers \
   --exclude-table-data 'storage.objects' \
-  --exclude-schema 'extensions|graphql|graphql_public|net|pgbouncer|pgsodium|pgsodium_masks|realtime|supabase_functions|storage|pg_*|information_schema' \
+  --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
   --schema '*' > dump.sql 
 
 sed "${sedi[@]}" -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
