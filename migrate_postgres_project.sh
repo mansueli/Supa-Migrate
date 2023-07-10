@@ -18,12 +18,23 @@ PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$P
   --clean \
   --if-exists \
   --quote-all-identifiers \
+  --schema-only \
   --no-owner --no-privileges \
   --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
   --schema '*' > dump.sql
+
+PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_DATABASE" \
+  --clean \
+  --if-exists \
+  --quote-all-identifiers \
+  --no-owner --no-privileges \
+  --data-only \
+  --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
+  --schema '*' > data_dump.sql  
 sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/POSTGRES_ORIGIN_USERNAME/postgres/g' dump.sql
 sed "${sedi[@]}" -e 's/POSTGRES_ORIGIN_DATABASE/postgres/g' dump.sql
 psql postgres://postgres:"$SUPA_PASSWORD"@"$SUPA_URL":6543/postgres --file dump.sql
+psql postgres://postgres:"$SUPA_PASSWORD"@"$SUPA_URL":6543/postgres --file data_dump.sql
