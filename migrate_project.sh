@@ -19,8 +19,18 @@ pg_dump postgres://postgres:"$OLD_DB_PASS"@"$OLD_DB_URL":6543/postgres \
   --if-exists \
   --quote-all-identifiers \
   --exclude-table-data 'storage.objects' \
+  --schema-only
   --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
   --schema '*' > dump.sql 
+  
+pg_dump postgres://postgres:"$OLD_DB_PASS"@"$OLD_DB_URL":6543/postgres \
+  --clean \
+  --if-exists \
+  --quote-all-identifiers \
+  --exclude-table-data 'storage.objects' \
+  --data-only
+  --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
+  --schema '*' > data_dump.sql 
 
 sed "${sedi[@]}" -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
 sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
@@ -28,3 +38,4 @@ sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.s
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
 psql postgres://postgres:"$NEW_DB_PASS"@"$NEW_DB_URL":6543/postgres --file dump.sql 
+psql postgres://postgres:"$NEW_DB_PASS"@"$NEW_DB_URL":6543/postgres --file data_dump.sql 
