@@ -24,7 +24,6 @@ PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$P
   --schema '*' > dump.sql
 
 PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_DATABASE" \
-  --clean \
   --if-exists \
   --quote-all-identifiers \
   --no-owner --no-privileges \
