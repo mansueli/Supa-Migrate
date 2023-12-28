@@ -15,8 +15,6 @@ case "$(uname)" in
 esac
 
 PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_DATABASE" \
-  --clean \
-  --if-exists \
   --quote-all-identifiers \
   --schema-only \
   --no-owner --no-privileges \
@@ -25,6 +23,7 @@ PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$P
 
 PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_DATABASE" \
   --if-exists \
+  --clean \
   --quote-all-identifiers \
   --no-owner --no-privileges \
   --data-only \
