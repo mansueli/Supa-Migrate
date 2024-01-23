@@ -4,6 +4,7 @@ export POSTGRES_USERNAME=POSTGRES_ORIGIN_USERNAME
 export POSTGRES_PASSWORD=POSTGRES_ORIGIN_PASSWORD
 export POSTGRES_DATABASE=POSTGRES_ORIGIN_DATABASE
 export POSTGRES_HOST=POSTGRES_ORIGIN_HOST
+export POSTGRES_PORT=POSTGRES_ORIGIN_PORT
 export SUPA_URL=SUPABASE_HOST
 export SUPA_PASSWORD=SUPABASE_PASSWORD
 #Script:
@@ -14,7 +15,7 @@ case "$(uname)" in
   Darwin*) sedi=(-i "")
 esac
 
-PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_DATABASE" \
+PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":"$POSTGRES_PORT"/"$POSTGRES_DATABASE" \
   --if-exists \
   --clean \
   --quote-all-identifiers \
@@ -23,7 +24,7 @@ PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$P
   --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
   --schema '*' > dump.sql
 
-PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":5432/"$POSTGRES_DATABASE" \
+PGSSLMODE=allow pg_dump postgres://"$POSTGRES_USERNAME":"$POSTGRES_PASSWORD"@"$POSTGRES_HOST":"$POSTGRES_PORT"/"$POSTGRES_DATABASE" \
   --quote-all-identifiers \
   --no-owner --no-privileges \
   --data-only \
