@@ -34,5 +34,5 @@ sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.s
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/POSTGRES_ORIGIN_USERNAME/postgres/g' dump.sql
 sed "${sedi[@]}" -e 's/POSTGRES_ORIGIN_DATABASE/postgres/g' dump.sql
-psql postgres://postgres:"$SUPA_PASSWORD"@"$SUPA_URL":6543/postgres --file dump.sql
-psql postgres://postgres:"$SUPA_PASSWORD"@"$SUPA_URL":6543/postgres --file data_dump.sql
+psql "$SUPA_URL" --file dump.sql
+psql "$SUPA_URL" --file data_dump.sql
