@@ -3,8 +3,6 @@
 #Edit here:
 OLD_SUPAVISOR_URL=postgres://postgres.oldproject:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 NEW_SUPAVISOR_URL=postgres://postgres.newproject:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
-OLD_DB_PASS=secret_password_here
-NEW_DB_PASS=secret_new_password_here
 
 #Script:
 # Default case for Linux sed, just use "-i"
