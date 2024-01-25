@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 #Edit here:
-OLD_DB_URL=db.old_project_ref.supabase.co
-OLD_DB_PASS=secret_password_here
+SUPAVISOR_URL=postgres://postgres.oldproject:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 
 #Script:
 # Default case for Linux sed, just use "-i"
@@ -12,13 +11,23 @@ case "$(uname)" in
   Darwin*) sedi=(-i "")
 esac
 
-pg_dump postgres://postgres:"$OLD_DB_PASS"@"$OLD_DB_URL":6543/postgres \
+pg_dump "$SUPAVISOR_URL" \
   --clean \
   --if-exists \
   --quote-all-identifiers \
   --exclude-table-data 'storage.objects' \
+  --schema-only
   --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
   --schema '*' > dump.sql 
+  
+pg_dump "$SUPAVISOR_URL" \
+  --clean \
+  --if-exists \
+  --quote-all-identifiers \
+  --exclude-table-data 'storage.objects' \
+  --data-only
+  --exclude-schema 'extensions|graphql|graphql_public|net|tiger|pgbouncer|vault|realtime|supabase_functions|storage|pg*|information_schema' \
+  --schema '*' > data_dump.sql 
 
 sed "${sedi[@]}" -e 's/^DROP SCHEMA IF EXISTS "auth";$/-- DROP SCHEMA IF EXISTS "auth";/' dump.sql
 sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXISTS "storage";/' dump.sql
