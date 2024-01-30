@@ -125,30 +125,30 @@ old_supabase_client = create_client(OLD_DB_URL, OLD_SERVICE_KEY)
 new_supabase_client = create_client(NEW_DB_URL, NEW_SERVICE_KEY)
 
 #Create all buckets
-buckets = old_supabase_client.storage().list_buckets()
+buckets = old_supabase_client.storage.list_buckets()
 for bucket in buckets:
     print("Copying objects from "+bucket.name)
-    objects = old_supabase_client.storage().from_(bucket.name).list()
+    objects = old_supabase_client.storage.from_(bucket.name).list()
     try:
-      new_supabase_client.storage().create_bucket(bucket.name, public=bucket.public)
-    except:
-      print("unable to create bucket")
+      new_supabase_client.storage.create_bucket(bucket.name, options={"public": bucket.public})
+    except Exception as e:
+      print("unable to create bucket "+e)
     for obj in objects:
         print(obj['name'])
         try:
           with open(obj['name'], 'wb+') as f:
-            res = old_supabase_client.storage().from_(bucket.name).download(obj['name'])
+            res = old_supabase_client.storage.from_(bucket.name).download(obj['name'])
             f.write(res)
             f.close()
-        except Exception as e: 
+        except Exception as e:
             print("error downloading "+ str(e))
         try:
           with open(obj['name'], 'rb+') as f:
-            res = new_supabase_client.storage().from_(bucket.name).upload(obj['name'], obj['name'])
+            res = new_supabase_client.storage.from_(bucket.name).upload(obj['name'], obj['name'])
           # Delete file after uploading it
           if os.path.exists(os.path.abspath(obj['name'])):
               os.remove(os.path.abspath(obj['name']))
-        except Exception as e: 
+        except Exception as e:
           print("error uploading | " + str(e))
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/migrate_objects.py) the script above.
