@@ -33,5 +33,6 @@ sed "${sedi[@]}" -e's/^DROP SCHEMA IF EXISTS "storage";$/-- DROP SCHEMA IF EXIST
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "auth";$/-- CREATE SCHEMA "auth";/' dump.sql
 sed "${sedi[@]}" -e 's/^CREATE SCHEMA "storage";$/-- CREATE SCHEMA "storage";/' dump.sql
 sed "${sedi[@]}" -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/' dump.sql
+sed "${sedi[@]}" -e '1s/^/SET session_replication_role = replica;\n/' data_dump.sql
 psql "$NEW_SUPAVISOR_URL" --file dump.sql
 psql "$NEW_SUPAVISOR_URL" --file data_dump.sql
