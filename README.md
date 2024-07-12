@@ -239,3 +239,4 @@ sed "${sedi[@]}" -e 's/^ALTER DEFAULT PRIVILEGES FOR ROLE "supabase_admin"/-- AL
 ```
 [Download](https://raw.githubusercontent.com/mansueli/Supa-Migrate/main/backup_database.sh) the script above.
 
+[![](https://img.shields.io/badge/Chat_with_Supa_Migrate-Ask_Cody-%238A16D7?labelColor=%23383838)](https://sourcegraph.com/github.com/mansueli/Supa-Migrate)
